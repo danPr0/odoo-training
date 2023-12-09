@@ -4,10 +4,10 @@ from odoo import models, Command
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
-    def sell_property(self):
-        if super().sell_property():
+    def action_sell(self):
+        if super().action_sell() and self.check_access_rights('write') and self.check_access_rule('write'):
             for record in self:
-                self.env['account.move'].create(
+                self.env['account.move'].sudo().create(
                     {
                         'partner_id': record.buyer_id.id,
                         'move_type': 'out_invoice',

@@ -8,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real estate properties'
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
@@ -33,6 +34,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one('estate.property.type')
     buyer_id = fields.Many2one('res.partner', copy=False)
     salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
 
@@ -72,7 +74,7 @@ class EstateProperty(models.Model):
                     not float_utils.float_is_zero(record.selling_price, precision_digits=2)):
                 raise ValidationError('The selling price cannot be lower than 90% of the expected price')
 
-    def cancel_property(self):
+    def action_cancel(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError('Sold properties cannot be canceled')
@@ -80,7 +82,7 @@ class EstateProperty(models.Model):
                 record.state = 'canceled'
         return True
 
-    def sell_property(self):
+    def action_sell(self):
         for record in self:
             if record.state == 'canceled':
                 raise UserError('Canceled properties cannot be sold')
