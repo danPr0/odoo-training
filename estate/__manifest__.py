@@ -1,7 +1,9 @@
 {
     'name': 'Estate',
     'category': 'Real Estate/Brokerage',
-    'depends': ['base'],
+    'depends': [
+        'base',
+    ],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -14,8 +16,9 @@
         'report/estate_reports.xml',
         'report/estate_report_views.xml',
         'data/estate.property.type.csv',
-        'demo/estate.property.xml',
-        'demo/estate.property.offer.xml'
+        'demo/estate_property_tag.xml',
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml'
     ],
     'installable': True,
     'application': True,

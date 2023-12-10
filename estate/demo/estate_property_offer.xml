@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
-<odoo>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
     <record id="villa_property_offer_1" model="estate.property.offer">
         <field name="price">1_600_000</field>
         <field name="validity">14</field>

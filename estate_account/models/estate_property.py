@@ -2,28 +2,33 @@ from odoo import models, Command
 
 
 class EstateProperty(models.Model):
+
     _inherit = 'estate.property'
 
     def action_sell(self):
-        if super().action_sell() and self.check_access_rights('write') and self.check_access_rule('write'):
-            for record in self:
+        res = super().action_sell()
+        journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
+        # Another way to get the journal:
+        # journal = self.env["account.move"].with_context(default_move_type="out_invoice")._get_default_journal()
+
+        if self.check_access_rights('write') and self.check_access_rule('write'):
+            for prop in self:
                 self.env['account.move'].sudo().create(
                     {
-                        'partner_id': record.buyer_id.id,
+                        'partner_id': prop.buyer_id.id,
                         'move_type': 'out_invoice',
+                        'journal_id': journal.id,
                         'invoice_line_ids': [
                             Command.create({
-                                'name': '6% of the selling price',
+                                'name': prop.name,
                                 'quantity': 1.0,
-                                'price_unit': 0.06 * record.selling_price
+                                'price_unit': prop.selling_price * 0.06
                             }),
                             Command.create({
-                                'name': 'An additional 100.00 from administrative fees',
+                                'name': 'Administrative fees',
                                 'quantity': 1.0,
                                 'price_unit': 100.00
                             })
                         ]
                     })
-            return True
-        else:
-            return False
+        return res
