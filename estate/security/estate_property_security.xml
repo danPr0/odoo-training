@@ -1,19 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="estate_group_user" model="res.groups">
-        <field name="name">Agent</field>
-        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
-        <field name="users" eval="[ref('base.user_demo')]"/>
-    </record>
-
-    <record id="estate_group_manager" model="res.groups">
-        <field name="name">Manager</field>
-        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
-        <field name="implied_ids" eval="[(ref('estate.estate_group_user'))]"/>
-        <field name="users" eval="[ref('base.user_admin')]"/>
-    </record>
-
-    <record id="estate_user_property_access_rule" model="ir.rule">
+    <record id="estate_property_rule_user" model="ir.rule">
         <field name="name">Limits agents to only being able to see or modify properties which they are the salesperson</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="domain_force">
@@ -26,7 +13,7 @@
         <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
     </record>
 
-    <record id="estate_manager_property_access_rule" model="ir.rule">
+    <record id="estate_property_rule_manager" model="ir.rule">
         <field name="name">Manager override rule</field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="domain_force">[]</field>
@@ -37,7 +24,7 @@
         <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]"/>
     </record>
 
-    <record id="multi_company_property_access_rule" model="ir.rule">
+    <record id="estate_property_rule_company" model="ir.rule">
         <field name="name"></field>
         <field name="model_id" ref="estate.model_estate_property"/>
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>

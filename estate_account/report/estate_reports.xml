@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="report_property_bid_info_inherit_account" inherit_id="estate.report_property_bid_info">
         <xpath expr="//table" position="before">

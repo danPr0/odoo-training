@@ -16,14 +16,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float('Price', required=True)
     validity = fields.Integer('Validity (days)', default=7)
 
-    state = fields.Selection(
-        selection=[
-            ('accepted', 'Accepted'),
-            ('refused', 'Refused'),
-        ],
-        string='Status',
-        copy=False,
-    )
+    state = fields.Selection(selection='_selection_state', string='Status', copy=False)
 
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
@@ -45,6 +38,13 @@ class EstatePropertyOffer(models.Model):
             offer.validity = (offer.date_deadline - date).days
 
     @api.model
+    def _selection_state(self):
+        return [
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused'),
+        ]
+
+    @api.model
     def create(self, vals):
         if vals.get("property_id") and vals.get("price"):
             prop = self.env["estate.property"].browse(vals["property_id"])
@@ -60,14 +60,14 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals)
 
     def action_accept(self):
-        if 'accepted' in self.mapped('property_id.offer_ids.state'):
+        self.ensure_one()
+
+        if 'accepted' in self.property_id.offer_ids.mapped('state'):
             raise UserError('An offer has already been accepted.')
-        self.write(
-            {
-                'state': 'accepted',
-            }
-        )
-        return self.mapped('property_id').write(
+
+        self.write({'state': 'accepted'})
+
+        return self.property_id.write(
             {
                 'state': 'offer_accepted',
                 'selling_price': self.price,
@@ -76,8 +76,5 @@ class EstatePropertyOffer(models.Model):
         )
 
     def action_refuse(self):
-        return self.write(
-            {
-                'state': 'refused'
-            }
-        )
+        self.ensure_one()
+        return self.write({'state': 'refused'})

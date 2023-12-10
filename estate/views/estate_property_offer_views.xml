@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="estate_property_offer_view_form" model="ir.ui.view">
-        <field name="name">estate.property.offer.form</field>
+        <field name="name">estate.property.offer.view.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form>
@@ -19,7 +19,7 @@
     </record>
 
     <record id="estate_property_offer_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.offer.tree</field>
+        <field name="name">estate.property.offer.view.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <tree string="Property Offers" editable="bottom" decoration-success="state == 'accepted'"

@@ -2,10 +2,11 @@ from odoo import models, Command
 
 
 class EstateProperty(models.Model):
-
     _inherit = 'estate.property'
 
     def action_sell(self):
+        self.ensure_one()
+
         res = super().action_sell()
         journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
         # Another way to get the journal:
