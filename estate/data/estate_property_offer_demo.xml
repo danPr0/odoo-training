@@ -29,7 +29,11 @@
     </function>
 
     <function model="estate.property.offer" name="action_refuse">
-        <value eval="[ref('estate.villa_property_offer_1'), ref('estate.villa_property_offer_2')]"/>
+        <value eval="ref('estate.villa_property_offer_1')"/>
+    </function>
+
+    <function model="estate.property.offer" name="action_refuse">
+        <value eval="ref('estate.villa_property_offer_2')"/>
     </function>
 
     <function model="estate.property" name="action_sell">

@@ -16,7 +16,7 @@
         'views/res_users_views.xml',
         'report/estate_templates.xml',
         'report/estate_reports.xml',
-        'data/estate.property.type.data.csv',
+        'data/estate.property.type.csv',
         'data/estate_property_tag_demo.xml',
         'data/estate_property_demo.xml',
         'data/estate_property_offer_demo.xml'
